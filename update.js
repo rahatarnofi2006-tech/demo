@@ -1,6 +1,7 @@
 // ==============================================
-// পপ-আপ UI (ব্যালেন্স + ট্রানজেকশন লিস্ট সহ)
+// SL TECH BD - লাইভ ট্রেডিং ড্যাশবোর্ড (লাইসেন্স ফ্রি)
 // ==============================================
+
 function createDashboardPopup() {
     const existing = document.getElementById('customPopup');
     if (existing) existing.remove();
@@ -50,12 +51,9 @@ function createDashboardPopup() {
         document.getElementById('customPopup').remove();
     });
 
-    renderTransactions(); // লিস্ট ও ব্যালেন্স দেখাও
+    renderTransactions();
 }
 
-// ==============================================
-// ট্রানজেকশন যোগ করা (লোকাল স্টোরেজে)
-// ==============================================
 function addTransaction() {
     const method = document.getElementById('methodSelect').value;
     const amountInput = document.getElementById('amountInput');
@@ -80,15 +78,12 @@ function addTransaction() {
     allTxs.push(txData);
     localStorage.setItem('transactions', JSON.stringify(allTxs));
     
-    alert('✅ টাকা জমা হয়েছে!');
+    alert('✅ টাকা জমা হয়েছে! ব্যালেন্স আপডেট হয়েছে।');
     amountInput.value = '';
     document.getElementById('txForm').style.display = 'none';
-    renderTransactions(); // সঙ্গে সঙ্গে আপডেট
+    renderTransactions();
 }
 
-// ==============================================
-// UI আপডেট (ব্যালেন্স + লিস্ট)
-// ==============================================
 function renderTransactions() {
     const allTxs = JSON.parse(localStorage.getItem('transactions')) || [];
     const listContainer = document.getElementById('txList');
@@ -117,25 +112,20 @@ function renderTransactions() {
     listContainer.innerHTML = html;
 }
 
-// ==============================================
 // লাভ/লোকসানের রঙ আপডেট (ঐচ্ছিক)
-// ==============================================
-function updateBalanceUI() {
+function updateProfitColors() {
     document.querySelectorAll('.profit-amount').forEach(el => {
         if (el.innerText.includes('+')) el.style.color = '#2ecc71';
         else if (el.innerText.includes('-')) el.style.color = '#e74c3c';
     });
 }
 
-// ==============================================
-// ★ ইনিশিয়ালাইজ (যেকোনো অবস্থায় কাজ করবে)
-// ==============================================
+// ইনিশিয়ালাইজ (কোনো লাইসেন্স চেক নেই)
 function initApp() {
     createDashboardPopup();
-    setInterval(updateBalanceUI, 3000);
+    setInterval(updateProfitColors, 3000);
 }
 
-// পেজ লোড হওয়ার আগে বা পরে যেকোনো সময় চালু হবে
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {
